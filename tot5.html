@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>filtering using api</title>
+</head>
+<body>
+    
+
+    <div class="superContainer">
+        <div class="childContainer1">
+<h2>users</h2>
+<div id="Users"></div>
+        </div>
+        <div class="childContainer2">
+<h2>Posts</h2>
+<div id="Posts"></div>
+        </div>
+    </div>
+
+
+
+</body>
+
+<script>
+
+
+function getUsers(){
+
+    let users_space = document.getElementById("Users");
+    let html_core="";
+   
+
+
+
+
+
+
+
+
+    let request = new XMLHttpRequest();
+    request.open("GET","https://jsonplaceholder.typicode.com/users");
+    request.send();
+    request.responseType = "json";
+    // request.setRequestHeader("content-type","application/json");
+    
+    request.onload = function(){
+        if(request.status>=200 && request.status<300){
+        
+            alert("get users seccesfully ...");
+            let results = request.response;
+            let i =0;
+           html_core+=`<div id="users" style="display: flex;
+           flex-direction: row;
+           
+           overflow-x: scroll;
+           
+           ">`;
+            while(i<results.length){
+                html_core +=`<div id="user" 
+                style="border:solid 1px black;margin-block:10px;
+                background-color:rgb(225, 226, 226);
+                margin-inline:10px;
+                border-radius:4px;
+                text-align:left;
+                cursor: pointer;
+
+
+
+
+
+                ">id: ${results[i].id} </br>
+                name : ${results[i].name}</br>
+                email : ${results[i].email}</br>
+                </div>`;
+                i++;
+            }
+             html_core+=`</div>`;
+  
+
+
+
+
+
+            users_space.innerHTML=html_core;  
+
+           setTimeout(() => events(results),1000);        
+
+        }
+        
+           
+
+        else{
+            alert("error : "+request.status);
+        }
+    }
+
+}
+
+
+            function events(results){
+            let i=0;
+                    let elementsArray = document.getElementById("users").querySelectorAll("div");
+                    elementsArray.forEach(function(elem,i) {
+                    elem.addEventListener("click", function() {
+                                   
+                        setTimeout(()=>{
+                             elem.style.backgroundColor="green";
+                               setTimeout(() => {
+                                elem.style.backgroundColor="rgb(225, 226, 226)";
+                               }, 500);
+                        },50)
+                    
+                        getPosts(results[i].id);
+                        i++;
+                    });
+
+                         
+                 
+
+                });
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+getUsers();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//post function :
+
+
+
+
+
+function getPosts(user_number){
+let post_space = document.getElementById("Posts");
+let post_core = "";
+let httprequest = new XMLHttpRequest();
+httprequest.open("GET",`https://jsonplaceholder.typicode.com/posts?userId=${user_number}`)
+httprequest.send();
+httprequest.responseType = "json";
+httprequest.onload = function(){
+    if(httprequest.status >=200 && httprequest.status<300){
+        
+
+//  alert(`get posts for user number : ${user_number}`);
+            let results = httprequest.response;
+            let i =0;
+           post_core+=`<div id="posts">`;
+            while(i<results.length){
+                post_core +=`<div id="post" 
+                style="border:solid 1px black;margin-block:10px;
+                background-color:rgb(225, 226, 226);
+                margin-inline:10px;
+                border-radius:4px;
+                text-align:left;
+                cursor: pointer;
+
+
+
+                ">userid: ${results[i].userId} </br>
+               title: ${results[i].title}</br>
+                body : ${results[i].body}</br>
+                </div>`;
+                i++;
+            }
+             post_core+=`</div>`;
+
+
+             post_space.innerHTML=post_core;
+             
+  
+
+
+    }
+    else{
+        alert("error : "+httprequest.status);
+    }
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getAlbums(user_number){
+
+let albumsArry = [];
+let httprequest = new XMLHttpRequest();
+httprequest.open("GET",`https://jsonplaceholder.typicode.com/albums?userId=${user_number}`)
+httprequest.send();
+httprequest.responseType = "json";
+httprequest.onload = function(){
+    if(httprequest.status >=200 && httprequest.status<300){
+        
+
+            let results = httprequest.response;
+            let i =0;
+          
+            while(i<results.length){
+                    albumsArry.push(results[i].id);
+                i++;
+            }
+    
+    getPhoto(albumsArry);
+
+
+    }
+    else{
+        alert("error : "+httprequest.status);
+    }
+}
+
+
+}
+
+
+
+
+function getPhoto(){
+
+
+
+let albumsArry = [];
+let httprequest = new XMLHttpRequest();
+httprequest.open("GET",`https://jsonplaceholder.typicode.com/albums?userId=${user_number}`)
+httprequest.send();
+httprequest.responseType = "json";
+httprequest.onload = function(){
+    if(httprequest.status >=200 && httprequest.status<300){
+        
+
+            let results = httprequest.response;
+            let i =0;
+          
+            while(i<results.length){
+                    albumsArry.push(results[i].id);
+                i++;
+            }
+    
+    getPhoto(albumsArry);
+
+
+    }
+    else{
+        alert("error : "+httprequest.status);
+    }
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+<style>
+:root{
+    --superColor:white;
+    --backgroundColor:white;
+    --fontColor:black;
+    --fontFamily:cursive;
+    --borderColor:black;
+}
+*{
+    box-sizing: border-box;
+    font-family: var(--fontFamily);
+    background-color: var(--backgroundColor);
+    color: var(--fontColor);
+    
+}
+
+
+
+
+
+
+
+.superContainerssss{
+overflow-x: scroll;
+  background-color: yellow;
+    border: solid 1px var(--borderColor);
+    justify-content: center;
+    width: 100%;
+    
+
+
+
+}
+
+.childContainer1{
+    
+    border: solid 1px var(--borderColor);
+    width: 100%;
+    /*background-color: yellow;*/
+    align-items: center;
+    text-align: center;
+}
+
+.childContainer2{
+        border: solid 1px var(--borderColor);
+    text-align: center;
+    width: 100%;
+    /* background-color: greenyellow; */
+}
+
+
+.childContainer1 h2,.childContainer2 h2{
+    text-decoration: underline;
+}
+
+
+
+
+
+
+</style>
+</html>
